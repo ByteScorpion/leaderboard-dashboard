@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="30">
+  <title>Sales Championship Leaderboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://media-hosting.imagekit.io/265656ae2b364371/background.jpg?Expires=1841086872&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=c9U7mLbDPeeqJtU6AUlPQIuq8571ZIxAOpCOBOxqitJ2NXmhYBOIoD4Kg2CofQ2nzdqZmXc1k~71BNSsqlC75NYPjoRLausMPT9mXUrf1qZTN705SfD9dX3SYiufEYAv3y98bp4xvfdzgyDxIgxfXW5o14lSMWrHsrwLbq4SGwbnPNA~~2Ajpw-uWjMxSd7K8Zh8zZtFcDr0abB4gLFRmovWw7CsC~pXuiqywS1QxyGq6SkyXllCTJOMsnL2OwFC-Z6V389qdGNoRCPl3qhJhcJaabqL8nZ4Ff82bEHZvh-Koeu0vzfNy9e1~KFxT9ft~WVkjy-40cIFtIYwqjJuMQ__');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      overflow: hidden;
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.85);
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin: 10px 0 20px;
+      color: #2c3e50;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .dashboard {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+    }
+
+    .top-vendors {
+      flex: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .other-vendors {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: auto;
+      max-height: calc(100vh - 120px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .other-vendors h2 {
+      text-align: center;
+      margin-top: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .vendor-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 30px);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .vendor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .top-vendor {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 245, 245, 0.95));
+      border: 1px solid rgba(255, 215, 0, 0.7);
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd700, #ffa500);
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .vendor-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .vendor-name {
+      font-size: 1.3em;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+      margin-top: 5px;
+      color: #2c3e50;
+    }
+
+    .vendor-score {
+      font-size: 1.1em;
+      background: rgba(52, 152, 219, 0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin-top: 5px;
+      color: #2980b9;
+      font-weight: bold;
+    }
+
+    .kpi {
+      margin: 10px 0;
+    }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+
+    .kpi-label {
+      font-size: 0.9em;
+      opacity: 0.9;
+      color: #7f8c8d;
+      font-weight: 600;
+    }
+
+    .kpi-value {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .progress-bar {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 5px;
+      overflow: hidden;
+      height: 15px;
+      position: relative;
+    }
+
+    .progress {
+      height: 100%;
+      text-align: right;
+      padding-right: 5px;
+      color: white;
+      font-weight: bold;
+      font-size: 0.75em;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      transition: width 0.5s ease;
+    }
+
+    .progress-recovery {
+      background: linear-gradient(90deg, #00b894, #00a884);
+    }
+
+    .progress-sales {
+      background: linear-gradient(90deg, #0984e3, #0767b3);
+    }
+
+    .progress-clients {
+      background: linear-gradient(90deg, #e17055, #d35400);
+    }
+
+    .other-vendor-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: background-color 0.2s ease;
+    }
+
+    .other-vendor-item:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .other-rank {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      font-size: 0.9em;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .other-name {
+      flex: 1;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+
+    .other-metrics {
+      display: flex;
+      gap: 15px;
+    }
+
+    .other-metric {
+      text-align: center;
+      min-width: 60px;
+    }
+
+    .other-metric-value {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .other-metric-label {
+      font-size: 0.7em;
+      opacity: 0.8;
+      color: #7f8c8d;
+    }
+
+    .other-score {
+      background: rgba(52, 152, 219, 0.1);
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      color: #2980b9;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    .date-display {
+      position: absolute;
+      bottom: 10px;
+      right: 20px;
+      font-size: 0.9em;
+      opacity: 0.7;
+      color: #7f8c8d;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+    }
+    
+    .first-place {
+      animation: pulse 2s infinite;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+      border: 2px solid gold;
+    }
+    
+    .first-place .rank-badge {
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      width: 45px;
+      height: 45px;
+      font-size: 1.4em;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>🏆 Classement - Sales Championship</h1>
+    <div class="dashboard">
+      <div id="topVendors" class="top-vendors"></div>
+      <div class="other-vendors">
+        <h2>Autres Vendeurs</h2>
+        <div id="otherVendors"></div>
+      </div>
+    </div>
+    <div class="date-display" id="dateDisplay"></div>
+  </div>
+
+  <script>
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTWNdJjJV5UO9HxVonynrxPkppDUxifyhnK7r4OUeLxTUF86UMxolquFuk6xgaYd3KfSo9pFE7tpeUh/pub?output=csv';
+
+    function formatNumber(num) {
+      return new Intl.NumberFormat('fr-FR').format(num);
+    }
+    
+    function createKPI(label, value, target, type) {
+      const percentage = (value / target * 100).toFixed(1);
+      const progressClass = type === 'recovery' ? 'progress-recovery' : 
+                           type === 'sales' ? 'progress-sales' : 'progress-clients';
+      
+      let displayValue = '';
+      
+      if (type === 'recovery') {
+        displayValue = `${percentage}%`;
+      } else if (type === 'sales') {
+        displayValue = `${percentage}%`;
+        value = formatNumber(value);
+        target = formatNumber(target);
+      } else if (type === 'clients') {
+        displayValue = `${percentage}%`;
+      }
+      
+      return `
+        <div class="kpi">
+          <div class="kpi-header">
+            <div class="kpi-label">${label}</div>
+            <div class="kpi-value">${value} / ${target}</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress ${progressClass}" style="width: ${Math.min(percentage, 100)}%">
+              ${displayValue}
+            </div>
+          </div>
+        </div>`;
+    }
+  
+    function renderTopVendors(vendors) {
+      const container = document.getElementById('topVendors');
+      container.innerHTML = '';
+      
+      for (let i = 0; i < Math.min(6, vendors.length); i++) {
+        const v = vendors[i];
+        const card = document.createElement('div');
+        card.className = `vendor-card top-vendor ${i === 0 ? 'first-place' : ''}`;
+        
+        card.innerHTML = `
+          <div class="vendor-header">
+            <div class="rank-badge">${i + 1}</div>
+            <div class="vendor-name">${v.name}</div>
+            <div class="vendor-score">${v.score.toFixed(1)} pts</div>
+          </div>
+          ${createKPI("Taux de recouvrement", v.recVal, v.recTarget, 'recovery')}
+          ${createKPI("Chiffre d'Affaires (kDZD)", v.caVal, v.caTarget, 'sales')}
+          ${createKPI("Activation Clients", v.clientsVal, v.clientsTarget, 'clients')}
+        `;
+        
+        container.appendChild(card);
+      }
+    }
+    
+    function renderOtherVendors(vendors) {
+      const container = document.getElementById('otherVendors');
+      container.innerHTML = '';
+      
+      for (let i = 6; i < vendors.length; i++) {
+        const v = vendors[i];
+        const item = document.createElement('div');
+        item.className = 'other-vendor-item';
+        
+        item.innerHTML = `
+          <div class="other-rank">${i + 1}</div>
+          <div class="other-name">${v.name}</div>
+          <div class="other-score">${v.score.toFixed(1)} pts</div>
+          <div class="other-metrics">
+            <div class="other-metric">
+              <div class="other-metric-value">${v.rec}%</div>
+              <div class="other-metric-label">Recouvrement</div>
+            </div>
+            <div class="other-metric">
+              <div class="other-metric-value">${v.ca}%</div>
+              <div class="other-metric-label">CA</div>
+            </div>
+            <div class="other-metric">
+              <div class="other-metric-value">${v.clients}%</div>
+              <div class="other-metric-label">Clients (${v.clientsVal}/${v.clientsTarget})</div>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(item);
+      }
+    }
+    
+    function updateDateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      document.getElementById('dateDisplay').textContent = now.toLocaleDateString('fr-FR', options);
+    }
+  
+    async function loadVendors() {
+      try {
+        const res = await fetch(sheetURL);
+        const data = await res.text();
+        const rows = data.split("\n").slice(1); // skip header
+  
+        const vendors = rows
+          .filter(row => row.trim().length > 0)
+          .map(row => {
+            const cols = row.split(",");
+            const name = cols[0];
+            
+            const recVal = parseFloat(cols[1]);
+            const recTarget = parseFloat(cols[2]);
+            const taux = (recVal / recTarget * 100).toFixed(1);
+            
+            const caVal = parseFloat(cols[3]);
+            const caTarget = parseFloat(cols[4]);
+            const ca = (caVal / caTarget * 100).toFixed(1);
+            
+            const clientsVal = parseFloat(cols[5]);
+            const clientsTarget = parseFloat(cols[6]);
+            const clients = (clientsVal / clientsTarget * 100).toFixed(1);
+            
+            // Calculate weighted score: recovery 40%, sales 40%, clients 20%
+            const score = 
+              parseFloat(taux) * 0.4 + 
+              parseFloat(ca) * 0.4 + 
+              parseFloat(clients) * 0.2;
+              
+            return { 
+              name, 
+              rec: taux, 
+              ca: ca, 
+              clients: clients, 
+              recVal,
+              recTarget,
+              caVal,
+              caTarget,
+              clientsVal,
+              clientsTarget,
+              score 
+            };
+          });
+  
+        const sorted = vendors.sort((a, b) => b.score - a.score);
+        renderTopVendors(sorted);
+        renderOtherVendors(sorted);
+        updateDateTime();
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    }
+  
+    // Initial load
+    loadVendors();
+    
+    // Update date/time every minute
+    setInterval(updateDateTime, 60000);
+  
+    // Reload data every 30 seconds
+    setInterval(loadVendors, 30000);
+  </script>
+  
+</body>
+</html>
