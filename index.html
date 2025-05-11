@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="300">
+  <meta http-equiv="refresh" content="3000">
   <title>Canal KA - Sales Championship Leaderboard</title>
   <style>
     body {
@@ -27,12 +27,35 @@
     }
 
     .header-container {
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin: 10px 0 20px;
       background-color: rgba(255, 255, 255, 0.85);
       padding: 15px;
       border-radius: 15px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+
+    .logo {
+      height: 120px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-left {
+      margin-right: 20px;
+    }
+
+    .logo-right {
+      margin-left: 20px;
     }
 
     h1 {
@@ -484,14 +507,30 @@
       .champion-image-container {
         width: 100%;
       }
+      
+      .header-container {
+        flex-direction: column;
+      }
+      
+      .logo-left, .logo-right {
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 <body>
   <div class="overlay">
     <div class="header-container">
-      <h1>🏆 Classement - Sales Championship</h1>
-      <div class="canal-badge">Canal KA</div>
+      <!-- Left Logo - Replace with your company logo URL -->
+      <img src="https://media-hosting.imagekit.io/d1b6fa4c35bb4fce/bestlogo.png?Expires=1841600694&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=okYAt~jw4iOdXhQ3dG3XzSYhQs7zFjZLRFQQ72zq4WFxRHdY3Zyqfkk~cMoQOh9ExY-QU5g0hR71lXpVvy-bDzfwkV4c04A1psAg8xKH8zQK3js22y44MaHgKQdxzjKVvwAe9~FeJFdpdoxdAAcbebronYqX7RWhXd3bPwRWLp1ZYtUa35oxOtnrrykxxn-KstOIc~K-Rdu2yD70kyq3rwBh-oxvtmusuQf1yFr9wfqU60l2zfWvamLlcZtDtQDLhtxTIvaavg2fwcsUTFpgs1DwMSr2z~zZQ5bY16~3tP~-vr7bZZCP73FRv~Vog8t7v0zLm7Dw1mD5o2lP7UT2Pg__" alt="Company Logo" class="logo logo-left">
+      
+      <div class="header-content">
+        <h1>🏆 Classement - Sales Championship</h1>
+        <div class="canal-badge">Canal KA</div>
+      </div>
+      
+      <!-- Right GIF - Replace with your GIF URL -->
+      <img src="https://media-hosting.imagekit.io/8a192c30fee44f92/giphy.gif?Expires=1841600667&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=WwiVojm~Hm4s611tgfArCDaddZ0kIYIDLby9SGEWWKLYUKv1Pcn~k1z~Ohc8lVbVq~9yctatHwvIM9ViMl3X~Gt4GfztAbhQpwxL1ksNOzluY-Fp~YyvQOPYjze8AUduLl821bY1tcIqXROwoxDTeKqB4I0jEceA0Q~J7xjfrShTP9-d7Y0ynDzYjAkpMqCYYIMFDfses~-KDH3ruTts7VimT-LFnLIUUzSkd0chs3tod8OhRcipqDaKFrIAmSSrDhhyVS3EGuPU79iNWryeAkX4lmYydd816qCR3TXqnqrTb6HeESJBSL5V1eaSeynC2Hdl4QAvSqqTQted6-9CPg__" alt="Sales GIF" class="logo logo-right">
     </div>
     <div class="dashboard">
       <div class="top-vendors">
@@ -697,7 +736,7 @@
       try {
         const res = await fetch(dataSheetURL);
         const data = await res.text();
-        const rows = data.split("\n").slice(1); // skip header
+        const rows = data.split("\n").slice(1); // skip header bach mayjich f data
 
         const vendors = rows
           .filter(row => row.trim().length > 0)
@@ -740,8 +779,8 @@
     // Update date/time every minute
     setInterval(updateDateTime, 60000);
   
-    // Reload data every 30 seconds
-    setInterval(loadVendors, 30000);
+    // Reload data every 30 seconds lala 60 khiir
+    setInterval(loadVendors, 60000);
   </script>
 </body>
 </html>
