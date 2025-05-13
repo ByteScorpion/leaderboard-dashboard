@@ -3,11 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="refresh" content="3000">
-  <title>Canal KA - Sales Championship Leaderboard</title>
+  <title>Sales Championship Leaderboard</title>
   <style>
+    /* Updated slogan style for new position */
+    .slogan {
+      background: #E30A17; /* Official Turkey flag red */
+      color: white;
+      padding: 15px 50px; /* Increased padding for width */
+      min-width: 350px; /* Wider minimum width */
+      text-align: center;
+      border-radius: 40px; /* More rounded corners */
+      font-weight: 700; /* Bolder text */
+      font-size: 1.8em; /* Larger text size */
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      border: 3px solid rgba(255,255,255,0.5);
+      margin: 0 20px;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 1px; /* Better letter spacing */
+    }
+    
+    .slogan::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.5) 50%,
+        rgba(255,255,255,0) 55%,
+        rgba(255,255,255,0) 100%
+      );
+      transform: rotate(30deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 100%; }
+      100% { left: 100%; }
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-image: url('https://media-hosting.imagekit.io/265656ae2b364371/background.jpg?Expires=1841086872&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=c9U7mLbDPeeqJtU6AUlPQIuq8571ZIxAOpCOBOxqitJ2NXmhYBOIoD4Kg2CofQ2nzdqZmXc1k~71BNSsqlC75NYPjoRLausMPT9mXUrf1qZTN705SfD9dX3SYiufEYAv3y98bp4xvfdzgyDxIgxfXW5o14lSMWrHsrwLbq4SGwbnPNA~~2Ajpw-uWjMxSd7K8Zh8zZtFcDr0abB4gLFRmovWw7CsC~pXuiqywS1QxyGq6SkyXllCTJOMsnL2OwFC-Z6V389qdGNoRCPl3qhJhcJaabqL8nZ4Ff82bEHZvh-Koeu0vzfNy9e1~KFxT9ft~WVkjy-40cIFtIYwqjJuMQ__');
+      background-image: url('https://media-hosting.imagekit.io/599a0322670d437a/lastttt.png?Expires=1841693823&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Y2pV~EgEgOpJndWbOCIHku905n871863HJDdhydMTm8tcExPCHKl-FNJinjc7zSiULr7UOEe0SMZmisi~h2FqrRpYU3MyjcCOSjl8Vy6hdUiCzXs-~nhx~iJdsMYRYySNLru51ODdGnr2m8RO3hCy6sK8w~ULQW3can6TkjaKrYX620kjImMakEI~Gy8zUnI5ATkLLW0QhUkb2kuRke2C8cGGnzrFM9PV0Eyz9SAGCAXf2dVDsocXCdRJ7PnkggWe7RlIRlGuEZ6kxi8r126szdiKdlj2Pokaa6xVUKxDpQVMqJForD7R-xDxxENB4ynyIXSivv0j3daQcETJx5~uQ__');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -39,9 +85,11 @@
 
     .header-content {
       display: flex;
-      flex-direction: column;
       align-items: center;
+      justify-content: space-between; /* Distributes space evenly */
+      width: 100%; /* Takes full available width */
       flex: 1;
+      
     }
 
     .logo {
@@ -58,11 +106,19 @@
       margin-left: 20px;
     }
 
+    .title-group {
+      display: flex;
+      flex-direction: column;
+      margin-right: auto;
+      margin-left: 200px;
+    }
+
     h1 {
       font-size: 2.5em;
       margin: 0 0 5px;
       color: #2c3e50;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
     }
 
     .canal-badge {
@@ -75,6 +131,7 @@
       font-size: 1.2em;
       margin-bottom: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: fit-content;
     }
 
     .dashboard {
@@ -467,6 +524,13 @@
     }
 
     @media (max-width: 1200px) {
+
+        .slogan {
+        font-size: 1.4em;
+        min-width: 300px;
+        padding: 12px 30px;
+        white-space: normal;
+      }
       .dashboard {
         flex-direction: column;
       }
@@ -510,10 +574,28 @@
       
       .header-container {
         flex-direction: column;
+        text-align: center;
       }
       
       .logo-left, .logo-right {
         margin: 10px 0;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      
+      .title-group {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .slogan {
+        margin: 15px 0;
+        white-space: normal;
+        text-align: center;
       }
     }
   </style>
@@ -522,22 +604,28 @@
   <div class="overlay">
     <div class="header-container">
       <!-- Left Logo - Replace with your company logo URL -->
-      <img src="https://media-hosting.imagekit.io/d1b6fa4c35bb4fce/bestlogo.png?Expires=1841600694&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=okYAt~jw4iOdXhQ3dG3XzSYhQs7zFjZLRFQQ72zq4WFxRHdY3Zyqfkk~cMoQOh9ExY-QU5g0hR71lXpVvy-bDzfwkV4c04A1psAg8xKH8zQK3js22y44MaHgKQdxzjKVvwAe9~FeJFdpdoxdAAcbebronYqX7RWhXd3bPwRWLp1ZYtUa35oxOtnrrykxxn-KstOIc~K-Rdu2yD70kyq3rwBh-oxvtmusuQf1yFr9wfqU60l2zfWvamLlcZtDtQDLhtxTIvaavg2fwcsUTFpgs1DwMSr2z~zZQ5bY16~3tP~-vr7bZZCP73FRv~Vog8t7v0zLm7Dw1mD5o2lP7UT2Pg__" alt="Company Logo" class="logo logo-left">
+      <img src="https://media-hosting.imagekit.io/ccd303e5a5b04dca/perfect%20maouda.gif?Expires=1841691415&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=zwMHpOUz8nI1RxcuW51r0qEj4oCp6KCC4HYxqTt2lhu0dg~9t34y4LEQkal7oCEo640~DTkUrAF~VCSGh1k4yKB~TelV7FYKzPQ3pzZ42XdrF79Q5biXDncdGkqp7NOqvnLDm3mvCiJq5bVxuMLGmhbs0spml3jyi4IBWajKvvy-zzaM-5sloSXaWvpJDHI~~9xwrE0C~P6gV6-Tgt7hshoNHX-n5ojecxzoVyYuX3WyAgpQCPK-BAVLU4KtwYSpstcA6u0TixtutuDi7mjffOS~EnUkP8WJ-bo6riV2iNwYE-QSIu9CO5xffJSZbPRgusEiAuyC2FLWQjBBZiCeXw__" alt="Company Logo" class="logo logo-left">
       
       <div class="header-content">
-        <h1>🏆 Classement - Sales Championship</h1>
-        <div class="canal-badge">Canal KA</div>
+        <div class="title-group">
+          <h1>Sales Championship</h1>
+          <div class="canal-badge">Key Account Channel</div>
+        </div>
+        
+        <!-- Added the slogan here -->
+        <div class="slogan">Passport to Victory : Who’s Flying to Turkey?</div>
       </div>
       
       <!-- Right GIF - Replace with your GIF URL -->
-      <img src="https://media-hosting.imagekit.io/8a192c30fee44f92/giphy.gif?Expires=1841600667&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=WwiVojm~Hm4s611tgfArCDaddZ0kIYIDLby9SGEWWKLYUKv1Pcn~k1z~Ohc8lVbVq~9yctatHwvIM9ViMl3X~Gt4GfztAbhQpwxL1ksNOzluY-Fp~YyvQOPYjze8AUduLl821bY1tcIqXROwoxDTeKqB4I0jEceA0Q~J7xjfrShTP9-d7Y0ynDzYjAkpMqCYYIMFDfses~-KDH3ruTts7VimT-LFnLIUUzSkd0chs3tod8OhRcipqDaKFrIAmSSrDhhyVS3EGuPU79iNWryeAkX4lmYydd816qCR3TXqnqrTb6HeESJBSL5V1eaSeynC2Hdl4QAvSqqTQted6-9CPg__" alt="Sales GIF" class="logo logo-right">
+      <img src="https://media-hosting.imagekit.io/3078409131f143b2/best%20try%20gpt.gif?Expires=1841691464&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=Z7HFH0a1nn-JjoxDYseDa-UK~LBnAXHB8b2Hl50SvW42EFFhW2gl5WfNdCcPClwTjRi6btQF68fM2hUcXkr~9DL0h2Tbgjwu35h0rX3a8lstWIbJpKsp2rNUeZKHQ~3Og6L4VJla2TYscZMy2DKFAvG5ogdYaeGyFaQ1APTehAtgzTddHpAhiiHzfiA3jJ4hbHFz~S54~Tmp5s~LY8AZCLLbJj0WQF7-avQc3qE6RGP6xxG5lGnQt7zkCu77Y4JTRaIbDWMXakq5vN1Z29qFoPUvSGJmZQJlfSFv1q5AvFA6UUATkkwoYHf7F36DJhh8OEkEP16A1Jnz49grXlV7hw__" alt="Sales GIF" class="logo logo-right">
     </div>
+    
     <div class="dashboard">
       <div class="top-vendors">
         <div id="topThree" class="top-three-container"></div>
       </div>
       <div class="other-vendors">
-        <h2>Autres Vendeurs</h2>
+        <h2>Other Sellers</h2>
         <div id="otherVendors"></div>
       </div>
     </div>
